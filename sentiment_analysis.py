@@ -7,14 +7,16 @@ print(" - Starting up application")
 lock = threading.Lock()
 app = Flask(__name__)
 
+
 class App:
     __shared_state = {}
+
     def __init__(self):
         self.__dict__ = self.__shared_state
 
     def classifier(self):
         with lock:
-            if getattr(self, '_classifier', None) == None:
+            if getattr(self, '_classifier', None) is None:
                 print(" - Building new classifier - might take a while.")
                 self._classifier = Classifier("LSTM").build()
                 print(" - Done!")
@@ -34,7 +36,7 @@ def main():
 def predict():
     q = request.args.get('q')
     label, prediction = App().classifier().classify(q)
-    return jsonify(q=q, predicted_class=label, prediction=prediction)
+    return jsonify(q=q, predicted_class=int(label), prediction=str(prediction))
 
 
 @app.route('/examples')
@@ -43,4 +45,4 @@ def examples():
     return jsonify(items=examples)
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1', debug=True)
+    app.run(port=8080, host='localhost', debug=True)

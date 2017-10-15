@@ -18,5 +18,5 @@ class Examples:
         predictions = []
         for X, y in data:
             label, _ = self.classifier.classify(X)
-            predictions.append(dict(q=X, predicted=label, real=y))
+            predictions.append(dict(q=X, predicted=int(label), real=int(y)))
         return predictions

@@ -7,6 +7,7 @@ from keras.layers.recurrent import LSTM
 from keras.preprocessing.sequence import pad_sequences
 from keras.regularizers import l2
 
+import tensorflow as tf
 import numpy as np
 import os.path
 
@@ -17,6 +18,7 @@ from lib.vocabulary import Vocabulary
 class Classifier:
     def __init__(self, name, max_words=500):
         self.model = None
+        self.graph = None
         self.name = name
         self.vocab = Vocabulary()
         self.max_words = max_words
@@ -34,6 +36,8 @@ class Classifier:
         else:
             print("Stored configuration for " + self.name + " has been found.")
             model = load_model(self.name)
+            model._make_predict_function()
+            self.graph = tf.get_default_graph()
             print("Model has been loaded.")
         self.model = model
         return self
@@ -70,5 +74,6 @@ class Classifier:
     def classify(self, X):
         inp = [self.vocab.vectorize(X)]
         inp = np.array(self.pad(inp))
-        y = self.model.predict(inp)[0][0]
-        return round(y), y
+        with self.graph.as_default():
+            y = self.model.predict(inp)[0][0]
+            return round(y), y
