@@ -55,6 +55,28 @@ var examples = {
   }
 }
 
+var statistics = {
+  show: function() {
+    $(".statistics").fadeIn(1500);
+  },
+  add: function(item) {
+    $line = $("<tr>")
+    $div = $("<div>").html(item.name)
+    $line.append($("<td class='text'>").text($div.text()));
+    $line.append($("<td class='text'>").text(item.accuracy));
+    $line.append($("<td class='text'>").text(item.errors.true_positives));
+    $line.append($("<td class='text'>").text(item.errors.true_negatives));
+    $line.append($("<td class='text'>").text(item.errors.false_positives));
+    $line.append($("<td class='text'>").text(item.errors.false_negatives));
+    $(".statistic_items").append($line);
+  },
+  addAll: function(items) {
+    $.each(items, function(i, item){
+      statistics.add(item);
+    });
+  }
+}
+
 $(function(){
   $("#predict_form").submit(function(e){
     e.preventDefault();
@@ -77,7 +99,12 @@ $(function(){
     examples.show()
 
     $("td.text").click(function(){
-      $(this).toggleClass("hover",10000)
+      $(this).toggleClass("hover", 10000)
     });
+  });
+
+  $.getJSON("/test").done(function(data) {
+    statistics.addAll(data.items);
+    statistics.show()
   });
 });

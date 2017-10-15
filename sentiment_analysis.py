@@ -3,6 +3,8 @@ from lib.classifier.l1classifier import L1Classifier
 from lib.classifier.l2classifier import L2Classifier
 from lib.examples import Examples
 import threading
+import json
+import os.path
 
 print(" - Starting up application")
 lock = threading.Lock()
@@ -53,6 +55,18 @@ def predict():
 def examples():
     examples = Examples(App().classifier('L1'), App().classifier('L2')).load(5, 5)
     return jsonify(items=examples)
+
+
+@app.route('/test')
+def test():
+    if not os.path.isfile('results.json'):
+        result = Examples(App().classifier('L1'), App().classifier('L2')).test()
+        with open('results.json', 'w') as outfile:
+            json.dump(result, outfile)
+    else:
+        with open('results.json', 'r') as infile:
+            result = json.load(infile)
+    return jsonify(items=result)
 
 if __name__ == '__main__':
     app.run(port=8080, host='localhost', debug=True)
