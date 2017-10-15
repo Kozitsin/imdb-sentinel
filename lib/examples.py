@@ -4,8 +4,9 @@ from lib.reader import load_dir
 
 
 class Examples:
-    def __init__(self, classifier):
-        self.classifier = classifier
+    def __init__(self, l1_classifier, l2_classifier):
+        self.l1_classifier = l1_classifier
+        self.l2_classifier = l2_classifier
 
     def load(self, positives, negatives):
         pos_dir = 'dataset/test/pos'
@@ -17,6 +18,7 @@ class Examples:
     def classify(self, data):
         predictions = []
         for X, y in data:
-            label, _ = self.classifier.classify(X)
-            predictions.append(dict(q=X, predicted=int(label), real=int(y)))
+            l1_label, _ = self.l1_classifier.classify(X)
+            l2_label, _ = self.l2_classifier.classify(X)
+            predictions.append(dict(q=X, l1_predicted=int(l1_label), l2_predicted=int(l2_label), real=int(y)))
         return predictions

@@ -1,11 +1,8 @@
 import random
 
-from keras.models import Sequential, load_model
-from keras.layers.core import Dense, Dropout, Activation
-from keras.layers.embeddings import Embedding
-from keras.layers.recurrent import LSTM
+from abc import ABC, abstractmethod
+from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
-from keras.regularizers import l2
 
 import tensorflow as tf
 import numpy as np
@@ -15,7 +12,7 @@ from lib.reader import load_dir
 from lib.vocabulary import Vocabulary
 
 
-class Classifier:
+class Classifier(ABC):
     def __init__(self, name, max_words=500):
         self.model = None
         self.graph = None
@@ -42,16 +39,6 @@ class Classifier:
         self.model = model
         return self
 
-    def architecture(self):
-        model = Sequential()
-        model.add(Embedding(self.vocab.size(), 128))
-        model.add(LSTM(128))
-        model.add(Dropout(0.5))
-        model.add(Dense(1, W_regularizer=l2(0.01)))
-        model.add(Activation('sigmoid'))
-        model.compile(loss='binary_crossentropy', optimizer='adam')
-        return model
-
     def train(self, model):
         pos_dir = 'dataset/train/pos'
         neg_dir = 'dataset/train/neg'
@@ -77,3 +64,7 @@ class Classifier:
         with self.graph.as_default():
             y = self.model.predict(inp)[0][0]
             return round(y), y
+
+    @abstractmethod
+    def architecture(self):
+        pass

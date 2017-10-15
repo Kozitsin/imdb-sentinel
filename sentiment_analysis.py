@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-from lib.classifier import Classifier
+from lib.classifier.l1classifier import L1Classifier
+from lib.classifier.l2classifier import L2Classifier
 from lib.examples import Examples
 import threading
 
@@ -14,13 +15,21 @@ class App:
     def __init__(self):
         self.__dict__ = self.__shared_state
 
-    def classifier(self):
+    def classifier(self, name=''):
         with lock:
             if getattr(self, '_classifier', None) is None:
-                print(" - Building new classifier - might take a while.")
-                self._classifier = Classifier("LSTM").build()
+                print(" - Building new classifiers - might take a while.")
+                print(" - L1 Classifier was build")
+                l1 = L1Classifier("L1.m").build()
+                print(" - L2 Classifier was build")
+                l2 = L2Classifier("L2.m").build()
+                self._classifier = (l1, l2)
                 print(" - Done!")
-            return self._classifier
+
+            if name == 'L1' or name == 'on':
+                return self._classifier[0]
+            else:
+                return self._classifier[1]
 
 t = threading.Thread(target=App().classifier)
 t.daemon = True
@@ -35,13 +44,14 @@ def main():
 @app.route('/predict')
 def predict():
     q = request.args.get('q')
-    label, prediction = App().classifier().classify(q)
+    ann_type = request.args.get('ann_type')
+    label, prediction = App().classifier(ann_type).classify(q)
     return jsonify(q=q, predicted_class=int(label), prediction=str(prediction))
 
 
 @app.route('/examples')
 def examples():
-    examples = Examples(App().classifier()).load(5, 5)
+    examples = Examples(App().classifier('L1'), App().classifier('L2')).load(5, 5)
     return jsonify(items=examples)
 
 if __name__ == '__main__':

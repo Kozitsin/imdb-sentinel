@@ -1,4 +1,4 @@
-.table { table-layout:fixed; }
+.table { table-layout:fixed;}
 td.text { color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 td.text.hover { white-space: normal; overflow: visible;  }
 td.danger, td.success { opacity: 0.75; }

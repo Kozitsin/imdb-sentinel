@@ -33,19 +33,21 @@ var examples = {
   show: function() {
     $(".examples").fadeIn(1500);
   },
-  add: function(q, predicted, real) {
+  add: function(q, l1_predicted, l2_predicted, real) {
     $line = $("<tr>")
     $div = $("<div>").html(q)
     $line.append($("<td class='text'>").text($div.text()));
-    $line.append(examples.classCell(predicted));
+    $line.append(examples.classCell(l1_predicted));
+    $line.append(examples.classCell(l2_predicted));
     $line.append(examples.classCell(real));
     $(".example_items").append($line);
   },
   addAll: function(items) {
     $.each(items, function(i, item){
-      predicted = parseInt(item.predicted);
+      l1_predicted = parseInt(item.l1_predicted);
+      l2_predicted = parseInt(item.l2_predicted);
       real = parseInt(item.real);
-      examples.add(item.q, predicted, real);
+      examples.add(item.q, l1_predicted, l2_predicted, real);
     });
   },
   classCell: function(value){

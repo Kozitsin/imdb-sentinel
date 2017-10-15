@@ -1,6 +1,7 @@
 import re
 import codecs
 
+
 class Vocabulary:
     def __init__(self, vocab_path='dataset/imdb.vocab'):
         self.vocab = dict()
