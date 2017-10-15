@@ -1,0 +1,12 @@
+name: sent-an
+dependencies:
+  - python=3.4  
+  - flask
+  - waitress
+  - scipy
+  - numpy
+  - h5py
+  - hdf5
+  - theano
+  - pip:
+    - keras

@@ -1,0 +1,4 @@
+dataset/*
+!dataset/.gitkeep
+__pycache__
+logs/*.log
