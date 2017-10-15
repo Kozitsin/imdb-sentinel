@@ -7,7 +7,6 @@ from keras.layers.recurrent import LSTM
 from keras.regularizers import l2
 
 
-# https://habrahabr.ru/company/dca/blog/274027
 class L2Classifier(Classifier):
     def architecture(self):
         model = Sequential()
