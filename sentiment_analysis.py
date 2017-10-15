@@ -16,7 +16,7 @@ class App:
         with lock:
             if getattr(self, '_classifier', None) == None:
                 print(" - Building new classifier - might take a while.")
-                self._classifier = Classifier().build()
+                self._classifier = Classifier("LSTM").build()
                 print(" - Done!")
             return self._classifier
 

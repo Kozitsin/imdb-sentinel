@@ -24,12 +24,17 @@ class Classifier:
     def build(self):
         self.vocab.build()
         if not os.path.isfile(self.name):
+            print("No stored configuration for " + self.name + " has been found.")
             model = self.architecture()
+            print("Model has been built.")
             model = self.train(model)
+            print("Model has been trained.")
             model.save(self.name)
+            print("Model has been stored.")
         else:
+            print("Stored configuration for " + self.name + " has been found.")
             model = load_model(self.name)
-
+            print("Model has been loaded.")
         self.model = model
         return self
 
