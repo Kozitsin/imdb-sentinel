@@ -42,7 +42,7 @@ class Classifier(ABC):
     def train(self, model):
         pos_dir = 'dataset/train/pos'
         neg_dir = 'dataset/train/neg'
-        data = load_dir(pos_dir, 1, 10) + load_dir(neg_dir, 0, 10)
+        data = load_dir(pos_dir, 1, 12500) + load_dir(neg_dir, 0, 12500)
         random.shuffle(data)
 
         features = list()

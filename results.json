@@ -1,0 +1,1 @@
+[{"accuracy": "0.82112", "errors": {"true_positives": 9154, "false_negatives": 3346, "false_positives": 1126, "true_negatives": 11374}, "name": "L1"}, {"accuracy": "0.7972", "errors": {"true_positives": 8079, "false_negatives": 4421, "false_positives": 649, "true_negatives": 11851}, "name": "L2"}]

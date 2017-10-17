@@ -24,7 +24,7 @@ class Examples:
         return predictions
 
     def test(self):
-        size = 20
+        size = 12500
         data = load_dir(self._pos_dir, 1, size) + load_dir(self._neg_dir, 0, size)
         original = []
         l1 = []
